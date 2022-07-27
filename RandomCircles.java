@@ -4,16 +4,24 @@ import java.util.*;
 
 public class RandomCircles extends Frame {
     private Random rnd;
+    private Runner r;
 
     public class Runner extends Thread {
-        public Runner() {
+        private Graphics gr;
+
+        public Runner(Graphics g) {
+            this.gr  =g;
+        }
+
+        public void setGraphics(Graphics g) {
+            this.gr = g;
         }
 
         public void run() {
             try {
                 while(true) {
-                    Thread.sleep(500);
-                    repaint();
+                    Thread.sleep(30);
+                    paint(this.gr);
                 }
             } catch(Exception ex) {
                 System.out.println("Exception occurred : " + ex.toString());
@@ -46,8 +54,12 @@ public class RandomCircles extends Frame {
             }
         });
 
-        Runner r = new Runner();
-        r.start();
+        this.r = new Runner(this.getGraphics());
+    }
+
+    public void startAnimation() {
+        this.r.setGraphics(this.getGraphics());
+        this.r.start();
     }
 
     public static void main(String[] args) {
@@ -56,6 +68,7 @@ public class RandomCircles extends Frame {
         rc.setTitle("Random Circles");
         rc.setSize(800,600);
         rc.setVisible(true);
-        
+
+        rc.startAnimation();
     }
 }
